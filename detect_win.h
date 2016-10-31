@@ -29,6 +29,7 @@ public:
 	void RemoveAAA(std::vector<int>& cardlist);
 	void RemoveABC(std::vector<int>& cardlist, int hong);
 	void RemoveABC(std::vector<int>& cardlist);
+    bool IsPairs(std::vector<int>& cardlist);
 
 private:
 	std::vector<int> m_wang;

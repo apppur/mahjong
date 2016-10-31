@@ -347,36 +347,74 @@ bool DetectWin::RemoveAA(std::vector<int>& cardlist)
 		}
 	}
 
-	bool flag = false;
-	for (unsigned int i = 0; i < cardlist.size(); i++)
-	{
-		if (cardlist[i] >= 2)
-		{
-			std::vector<int> cardlast;
-			cardlast.assign(cardlist.begin(), cardlist.end());
-			cardlast[i] -= 2;
-			RemoveAAA(cardlast);
-			if (m_hong > 0)
-			{
-				RemoveABC(cardlast, m_hong);
-			}
-			else
-			{
-				RemoveABC(cardlast);
-			}
-			bool subflag = true;
-			for (std::vector<int>::iterator iter = cardlast.begin(); iter != cardlast.end(); ++iter)
-			{
-				if (*iter > 0)
-				{
-					subflag = false;
-					break;
-				}
-			}
-			flag = flag || subflag;
-		}
-	}
+    bool flag = false;
+    if (!IsPairs(cardlist))
+    {
+        if (m_hong < 1)
+        {
+            return false;
+        }
+        else if (m_hong == 1)
+        {
+            RemoveAAA(cardlist);
+            RemoveABC(cardlist);
+            std::vector<int> leftlist;
+            if (CalcLeftCard(cardlist, leftlist) == 1)
+            {
+                CardInfo card = DeCodeCard(leftlist[0]);
+                AddTingCard(card);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    } 
+    else
+    {
+        for (unsigned int i = 0; i < cardlist.size(); i++)
+        {
+            if (cardlist[i] >= 2)
+            {
+                std::vector<int> cardlast;
+                cardlast.assign(cardlist.begin(), cardlist.end());
+                cardlast[i] -= 2;
+                RemoveAAA(cardlast);
+                if (m_hong > 0)
+                {
+                    RemoveABC(cardlast, m_hong);
+                }
+                else
+                {
+                    RemoveABC(cardlast);
+                }
+                bool subflag = true;
+                for (std::vector<int>::iterator iter = cardlast.begin(); iter != cardlast.end(); ++iter)
+                {
+                    if (*iter > 0)
+                    {
+                        subflag = false;
+                        break;
+                    }
+                }
+                flag = flag || subflag;
+            }
+        }
+    }
 	return flag;
+}
+
+bool DetectWin::IsPairs(std::vector<int>& cardlist)
+{
+	for (unsigned int i = 0; i < cardlist.size(); i++)
+    {
+        if (cardlist[i] >= 2)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void DetectWin::RemoveAAA(std::vector<int>& cardlist)
