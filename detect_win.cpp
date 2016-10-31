@@ -24,6 +24,7 @@ void DetectWin::Reset()
 	m_hong = 0;
 	m_all = false;
 	m_win = false;
+    m_ting.clear();
 	m_hongWTT.assign(10, 0);
 }
 
@@ -129,8 +130,7 @@ void DetectWin::DumpCards()
             printf("%d%d\t", i, m_tiao[i]);
         }
     }
-    printf("\nHONg:%d", m_hong);
-    printf("\n========================================\n");
+    printf("\nHONG:%d\n", m_hong);
 }
 
 void DetectWin::AddTingCard(const CardInfo& card)
@@ -220,7 +220,8 @@ void DetectWin::DetectDump()
 
 void DetectWin::DumpTing()
 {
-	printf("\n=======================Current Ting Card================================\n");
+	//printf("\n=======================Current Ting Card================================\n");
+    printf("Current Ting: ");
 	for (std::vector<CardInfo>::iterator iter = m_ting.begin(); iter != m_ting.end(); ++iter)
 	{
 		printf("%d%d ", iter->m_type, iter->m_code);
@@ -483,6 +484,11 @@ void DetectWin::RemoveABC(std::vector<int>& cardlist, int hong)
 				cardlist[i + 1] -= 1;
 				hong--;
 			}
+            else if (cardlist[i]==2 && cardlist[i+1] == 0 && hong > 0)
+            {
+                cardlist[i] -= 2;
+                hong--;
+            }
 			else
 			{
 				i++;
