@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 	detect.AddCardCode(28);
 	detect.AddCardCode(29);
 	detect.AddCardCode(30);
+    detect.DumpCards();
 	detect.DetectDump();
 	detect.DetectWinOne();
 	detect.DumpTing();

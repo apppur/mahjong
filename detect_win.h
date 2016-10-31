@@ -15,6 +15,7 @@ public:
 	CardInfo DeCodeCard(int code);
 	bool AddCardCode(int code);
 	void DumpTing();
+    void DumpCards();
 
 	void Reset();
 	bool DetectAA();

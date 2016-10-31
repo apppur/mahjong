@@ -1,4 +1,5 @@
 #include "detect_win.h"
+#include "stdio.h"
 
 DetectWin::DetectWin()
 {
@@ -99,6 +100,37 @@ bool DetectWin::AddCardCode(int code)
 		}
 	}
 	return false;
+}
+
+void DetectWin::DumpCards()
+{
+    printf("\n========================================\n");
+    printf("WAN:");
+    for (unsigned int i = 0; i < m_wang.size(); i++)
+    {
+        if (m_wang[i] > 0)
+        {
+            printf("%d%d\t", i, m_wang[i]);
+        }
+    }
+    printf("\nTONG:");
+    for (unsigned int i = 0; i < m_tong.size(); i++)
+    {
+        if (m_tong[i] > 0)
+        {
+            printf("%d%d\t", i, m_tong[i]);
+        }
+    }
+    printf("\nTIAO:");
+    for (unsigned int i = 0; i < m_tiao.size(); i++)
+    {
+        if (m_tiao[i] > 0)
+        {
+            printf("%d%d\t", i, m_tiao[i]);
+        }
+    }
+    printf("\nHONg:%d", m_hong);
+    printf("\n========================================\n");
 }
 
 void DetectWin::AddTingCard(const CardInfo& card)
