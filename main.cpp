@@ -1,5 +1,8 @@
 #include "detect_win.h"
 #include <iostream>
+#include <ctime>
+#include <ratio>
+#include <chrono>
 
 int main(int argc, char** argv)
 {
@@ -41,8 +44,12 @@ int main(int argc, char** argv)
 	detect.AddCardCode(30);
     detect.DumpCards();
 	detect.DetectDump();
+    std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 	detect.DetectWinOne();
+    std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
 	detect.DumpTing();
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2-t1);
+    std::cout << "Calc win cost :" << time_span.count() << " seconds" << std::endl;
 	//goto Repeat;
 
 	return 0;
