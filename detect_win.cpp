@@ -318,7 +318,7 @@ bool DetectWin::DetectAllCard()
 		{
 			return true;
 		}
-		if (i != 10 || i != 20)
+		if (i != 10 && i != 20)
 		{
 			CardInfo card = DeCodeCard(i);
 			std::vector<int> cardlist;
