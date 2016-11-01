@@ -191,6 +191,19 @@ CardInfo DetectWin::DeCodeCard(int code)
 	return card;
 }
 
+int DetectWin::GetTingCards(std::vector<int>& cardlist)
+{
+    int count = 0;
+    for (unsigned int i = 0; i < m_ting.size(); ++i)
+    {
+        int code = EnCodeCard(m_ting[i]);
+        cardlist.push_back(code);
+        count++;
+    }
+
+    return count;
+}
+
 void DetectWin::DetectDump()
 {
 	m_hongWTT.clear();

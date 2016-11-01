@@ -16,6 +16,7 @@ public:
 	bool AddCardCode(int code);
 	void DumpTing();
     void DumpCards();
+    int GetTingCards(std::vector<int>& cardlist);
 
 	void Reset();
 	bool DetectAA();
