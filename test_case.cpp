@@ -58,6 +58,8 @@ bool TestCase::AutoVerify()
             {
                 m_detect.AddCardCode(m_cards[n]);
             }
+            std::cout << "------------------------------------------------------------------------" << std::endl;
+            std::cout << "Test Card: " << m_cards[i];
             m_detect.AddCardCode(m_ting[j]);
             m_detect.DumpCards();
             m_detect.DetectDump();
@@ -65,6 +67,32 @@ bool TestCase::AutoVerify()
             m_detect.DetectWinOne();
             timer.Span();
             m_detect.DumpTing();
+            std::vector<int> tinglist;
+            int count = m_detect.GetTingCards(tinglist);
+            if (count == 0)
+            {
+                std::cout << "\033[1;31m" << "Card: " << m_ting[j] << " Replace Card: " << m_cards[i] << " TEST FAILED!!!\033[0m" << std::endl;
+            }
+            else
+            {
+                bool found = false;
+                for (unsigned int k = 0; k < tinglist.size(); k++)
+                {
+                    if (m_cards[i] == tinglist[k])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    std::cout << "\033[1;32m" << "Card: " << m_ting[j] << " Replace Card: " << m_cards[i] << " TEST PASS!!!" << "\033[0m" << std::endl;
+                } else
+                {
+                    std::cout << "\033[1;31m" << "Card: " << m_ting[j] << " Replace Card: " << m_cards[i] << " TEST FAILED!!!" << "\033[0m" << std::endl;
+                }
+            }
+            std::cout << "------------------------------------------------------------------------" << std::endl;
         }
     }
 }
