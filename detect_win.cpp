@@ -105,32 +105,33 @@ bool DetectWin::AddCardCode(int code)
 
 void DetectWin::DumpCards()
 {
-    printf("\n========================================\n");
+    printf("\n");
+    //printf("\n========================================\n");
     printf("WAN:");
     for (unsigned int i = 0; i < m_wang.size(); i++)
     {
         if (m_wang[i] > 0)
         {
-            printf("%d%d\t", i, m_wang[i]);
+            printf("%d%d ", i, m_wang[i]);
         }
     }
-    printf("\nTONG:");
+    printf("\tTONG:");
     for (unsigned int i = 0; i < m_tong.size(); i++)
     {
         if (m_tong[i] > 0)
         {
-            printf("%d%d\t", i, m_tong[i]);
+            printf("%d%d ", i, m_tong[i]);
         }
     }
-    printf("\nTIAO:");
+    printf("\tTIAO:");
     for (unsigned int i = 0; i < m_tiao.size(); i++)
     {
         if (m_tiao[i] > 0)
         {
-            printf("%d%d\t", i, m_tiao[i]);
+            printf("%d%d ", i, m_tiao[i]);
         }
     }
-    printf("\nHONG:%d\n", m_hong);
+    printf("\tHONG:%d\n", m_hong);
 }
 
 void DetectWin::AddTingCard(const CardInfo& card)
@@ -239,7 +240,8 @@ void DetectWin::DumpTing()
 	{
 		printf("%d%d ", iter->m_type, iter->m_code);
 	}
-	printf("\n========================================================================\n");
+    printf("\n");
+	//printf("\n========================================================================\n");
 }
 
 bool DetectWin::DetectAA()
@@ -364,7 +366,7 @@ bool DetectWin::RemoveAA(std::vector<int>& cardlist)
     bool flag = false;
     if (!IsPairs(cardlist))
     {
-        if (m_hong < 1)
+        if (m_hong < 0)
         {
             return false;
         }

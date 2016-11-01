@@ -54,7 +54,7 @@ bool TestCase::AutoVerify()
             {
                 m_detect.AddCardCode(m_cards[m]);
             }
-            for (unsigned int n = 0; n < m_cards.size(); n++)
+            for (unsigned int n = i+1; n < m_cards.size(); n++)
             {
                 m_detect.AddCardCode(m_cards[n]);
             }
