@@ -27,7 +27,7 @@ public:
 	bool DetectWinOne();
 	int  CalcLeftCard(std::vector<int>& cardlist, std::vector<int>& leftlist);
 	bool RemoveAA(std::vector<int>& cardlist);
-	void RemoveAAA(std::vector<int>& cardlist);
+	bool RemoveAAA(std::vector<int>& cardlist);
 	void RemoveABC(std::vector<int>& cardlist, int hong);
 	void RemoveABC(std::vector<int>& cardlist);
     bool IsPairs(std::vector<int>& cardlist);

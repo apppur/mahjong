@@ -341,14 +341,15 @@ bool DetectWin::DetectAllCard()
 
 bool DetectWin::RemoveAA(std::vector<int>& cardlist)
 {
-	if (m_hong >= 2)
+    bool flag = false;
+	if (m_hong >= 1)
 	{
 		std::vector<int> cardlast;
 		cardlast.assign(cardlist.begin(), cardlist.end());
 		RemoveAAA(cardlast);
-		if (m_hong - 2 > 0)
+		if (m_hong - 1 > 0)
 		{
-			RemoveABC(cardlast, m_hong - 2);
+			RemoveABC(cardlast, m_hong - 1);
 		}
 		else
 		{
@@ -361,9 +362,12 @@ bool DetectWin::RemoveAA(std::vector<int>& cardlist)
 			m_all = true;
 			return m_all;
 		}
+        else if (CalcLeftCard(cardlast, leftlist) == 1)
+        {
+            flag = true;
+        }
 	}
 
-    bool flag = false;
     if (!IsPairs(cardlist))
     {
         if (m_hong < 0)
@@ -433,16 +437,19 @@ bool DetectWin::IsPairs(std::vector<int>& cardlist)
     return false;
 }
 
-void DetectWin::RemoveAAA(std::vector<int>& cardlist)
+bool DetectWin::RemoveAAA(std::vector<int>& cardlist)
 {
+    int flag = false;
 	for (unsigned int i = 0; i < cardlist.size(); i++)
 	{
 		if (cardlist[i] >= 3)
 		{
 			cardlist[i] -= 3;
-			return;
+            flag = true;
 		}
 	}
+
+    return flag;
 }
 
 void DetectWin::RemoveABC(std::vector<int>& cardlist)
