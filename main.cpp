@@ -311,19 +311,18 @@ int main(int argc, char** argv)
     }
     {
         detect.Reset();
-        detect.AddCardCode(3);
-        detect.AddCardCode(4);
         detect.AddCardCode(5);
-        detect.AddCardCode(6);
-        detect.AddCardCode(7);
-        detect.AddCardCode(15);
-        detect.AddCardCode(15);
+        detect.AddCardCode(13);
+        detect.AddCardCode(14);
         detect.AddCardCode(16);
-        detect.AddCardCode(16);
-        detect.AddCardCode(16);
+        detect.AddCardCode(17);
+        detect.AddCardCode(18);
+        detect.AddCardCode(19);
         //detect.AddCardCode(21);
         //detect.AddCardCode(30);
-        //detect.AddCardCode(30);
+        detect.AddCardCode(30);
+        detect.AddCardCode(30);
+        detect.AddCardCode(30);
         detect.DumpCards();
         detect.DetectDump();
         std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();

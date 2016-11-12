@@ -366,6 +366,10 @@ bool DetectWin::RemoveAA(std::vector<int>& cardlist)
         {
             flag = true;
         }
+        else if (CalcLeftCard(cardlast, leftlist) == 2 && m_hong - 1 == 2)
+        {
+            flag = true;
+        }
 	}
 
     if (!IsPairs(cardlist))
