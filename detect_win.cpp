@@ -285,7 +285,9 @@ bool DetectWin::DetectWinOne()
 	//	return false;
 	//}
 
-	return DetectAllCard();
+	DetectAllCard(); 
+    DetectReverse();
+    return m_win;
 }
 
 bool DetectWin::DetectDivision(unsigned int type)
@@ -325,6 +327,35 @@ bool DetectWin::DetectAllCard()
 			cardlist.assign(m_hongWTT.begin(), m_hongWTT.end());
 			DetectCard(card, cardlist);
 			if (RemoveAA(cardlist))
+			{
+				m_win = true;
+				if (m_all)
+				{
+					return m_all;
+				}
+				AddTingCard(card);
+			}
+		}
+	}
+
+	return m_win;
+}
+
+bool DetectWin::DetectReverse()
+{
+	for (int i = 1; i < 30; i++)
+	{
+		if (m_all)
+		{
+			return true;
+		}
+		if (i != 10 && i != 20)
+		{
+			CardInfo card = DeCodeCard(i);
+			std::vector<int> cardlist;
+			cardlist.assign(m_hongWTT.begin(), m_hongWTT.end());
+			DetectCard(card, cardlist);
+			if (ReverseAA(cardlist))
 			{
 				m_win = true;
 				if (m_all)
@@ -428,6 +459,95 @@ bool DetectWin::RemoveAA(std::vector<int>& cardlist)
 	return flag;
 }
 
+bool DetectWin::ReverseAA(std::vector<int>& cardlist)
+{
+    bool flag = false;
+	if (m_hong >= 1)
+	{
+		std::vector<int> cardlast;
+		cardlast.assign(cardlist.begin(), cardlist.end());
+		RemoveAAA(cardlast);
+		if (m_hong - 1 > 0)
+		{
+			RemoveCBA(cardlast, m_hong - 1);
+		}
+		else
+		{
+			RemoveCBA(cardlast);
+		}
+		std::vector<int> leftlist;
+		if (CalcLeftCard(cardlast, leftlist) == 0)
+		{
+			TingAllCard();
+			m_all = true;
+			return m_all;
+		}
+        else if (CalcLeftCard(cardlast, leftlist) == 1)
+        {
+            flag = true;
+        }
+        else if (CalcLeftCard(cardlast, leftlist) == 2 && m_hong - 1 == 2)
+        {
+            flag = true;
+        }
+	}
+
+    if (!IsPairs(cardlist))
+    {
+        if (m_hong < 0)
+        {
+            return false;
+        }
+        else if (m_hong == 1)
+        {
+            RemoveAAA(cardlist);
+            RemoveCBA(cardlist);
+            std::vector<int> leftlist;
+            if (CalcLeftCard(cardlist, leftlist) == 1)
+            {
+                CardInfo card = DeCodeCard(leftlist[0]);
+                AddTingCard(card);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    } 
+    else
+    {
+        for (unsigned int i = 0; i < cardlist.size(); i++)
+        {
+            if (cardlist[i] >= 2)
+            {
+                std::vector<int> cardlast;
+                cardlast.assign(cardlist.begin(), cardlist.end());
+                cardlast[i] -= 2;
+                RemoveAAA(cardlast);
+                if (m_hong > 0)
+                {
+                    RemoveCBA(cardlast, m_hong);
+                }
+                else
+                {
+                    RemoveCBA(cardlast);
+                }
+                bool subflag = true;
+                for (std::vector<int>::iterator iter = cardlast.begin(); iter != cardlast.end(); ++iter)
+                {
+                    if (*iter > 0)
+                    {
+                        subflag = false;
+                        break;
+                    }
+                }
+                flag = flag || subflag;
+            }
+        }
+    }
+	return flag;
+}
+
 bool DetectWin::IsPairs(std::vector<int>& cardlist)
 {
 	for (unsigned int i = 0; i < cardlist.size(); i++)
@@ -480,6 +600,29 @@ void DetectWin::RemoveABC(std::vector<int>& cardlist)
 	}
 }
 
+void DetectWin::RemoveCBA(std::vector<int>& cardlist)
+{
+    for (int i = (cardlist.size() - 1); i >= 0; )
+    {
+        if (i >= 2)
+        {
+            if (cardlist[i] > 0 && cardlist[i-1] > 0 && cardlist[i - 2] > 0)
+            {
+                cardlist[i] -= 1;
+                cardlist[i - 1] -= 1;
+                cardlist[i - 2] -= 1;
+            }
+            else 
+            {
+                i--;
+            }
+        } else
+        {
+            i--;
+        }
+    }
+}
+
 void DetectWin::RemoveABC(std::vector<int>& cardlist, int hong)
 {
 	for (unsigned int i = 0; i < cardlist.size();)
@@ -491,7 +634,14 @@ void DetectWin::RemoveABC(std::vector<int>& cardlist, int hong)
 				cardlist[i] -= 1;
 				cardlist[i + 1] -= 1;
 				cardlist[i + 2] -= 1;
-			}
+			} 
+            else if (i + 4 < cardlist.size() && cardlist[i] > 0 && cardlist[i+1] == 0 && cardlist[i+2] > 0 && cardlist[i+3] > 0 
+                    && cardlist[i+4] >= 2)
+            {
+                cardlist[i+2] -= 1;
+                cardlist[i+3] -= 1;
+                cardlist[i+4] -= 1;
+            }
 			else if (i + 2 < cardlist.size() && cardlist[i] > 0 && cardlist[i + 1] == 0 && cardlist[i + 2] > 0 && hong > 0 && ((i + 1) % 10 != 0))
 			{
 				cardlist[i] -= 1;
@@ -523,6 +673,71 @@ void DetectWin::RemoveABC(std::vector<int>& cardlist, int hong)
 		else
 		{
 			i++;
+		}
+	}
+	std::vector<int> leftlist;
+	int left = CalcLeftCard(cardlist, leftlist);
+	if (hong == 2 && left == 1)
+	{
+		cardlist[leftlist[0]] = 0;
+	}
+	else if (hong == 3 && left == 0)
+	{
+		TingAllCard();
+		m_win = true;
+	}
+}
+
+void DetectWin::RemoveCBA(std::vector<int>& cardlist, int hong)
+{
+	for (int i = (cardlist.size() - 1); i >= 0;)
+	{
+		if (i >= 2)
+		{
+			if (cardlist[i] > 0 && cardlist[i - 1] > 0 && cardlist[i - 2] > 0)
+			{
+				cardlist[i] -= 1;
+				cardlist[i - 1] -= 1;
+				cardlist[i - 2] -= 1;
+			} 
+            else if (i >= 4 && cardlist[i] > 0 && cardlist[i-1] == 0 && cardlist[i-2] > 0 && cardlist[i-3] > 0 
+                    && cardlist[i-4] >= 2)
+            {
+                cardlist[i-2] -= 1;
+                cardlist[i-3] -= 1;
+                cardlist[i-4] -= 1;
+            }
+			else if (cardlist[i] > 0 && cardlist[i - 1] == 0 && cardlist[i - 2] > 0 && hong > 0 && ((i - 1) % 10 != 0))
+			{
+				cardlist[i] -= 1;
+				hong--;
+				cardlist[i - 2] -= 1;
+			}
+			else if (cardlist[i] > 0 && cardlist[i - 1] > 0 && cardlist[i - 2] == 0 && hong > 0 && ((i - 2) % 10 != 0))
+			{
+				cardlist[i] -= 1;
+				cardlist[i - 1] -= 1;
+				hong--;
+			}
+			else if (cardlist[i] > 0 && cardlist[i - 1] > 0 && hong > 0 && ((i - 1) % 10 == 1))
+			{
+				cardlist[i] -= 1;
+				cardlist[i - 1] -= 1;
+				hong--;
+			}
+            else if (cardlist[i]==2 && cardlist[i-1] == 0 && hong > 0)
+            {
+                cardlist[i] -= 2;
+                hong--;
+            }
+			else
+			{
+				i--;
+			}
+		}
+		else
+		{
+			i--;
 		}
 	}
 	std::vector<int> leftlist;

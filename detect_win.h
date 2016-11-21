@@ -30,6 +30,10 @@ public:
 	bool RemoveAAA(std::vector<int>& cardlist);
 	void RemoveABC(std::vector<int>& cardlist, int hong);
 	void RemoveABC(std::vector<int>& cardlist);
+	void RemoveCBA(std::vector<int>& cardlist, int hong);
+	void RemoveCBA(std::vector<int>& cardlist);
+    bool ReverseAA(std::vector<int>& cardlist);
+    bool DetectReverse();
     bool IsPairs(std::vector<int>& cardlist);
 
 private:
