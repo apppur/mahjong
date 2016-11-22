@@ -767,3 +767,15 @@ int DetectWin::CalcLeftCard(std::vector<int>& cardlist, std::vector<int>& leftli
 
 	return sum;
 }
+
+bool DetectWin::IsWin()
+{
+    std::vector<int> cardlist;
+    cardlist.assign(m_hongWTT.begin(), m_hongWTT.end());
+    if (RemoveAA(cardlist) || ReverseAA(cardlist))
+    {
+        m_win = true;
+    }
+
+    return m_win;
+}

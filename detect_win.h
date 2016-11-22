@@ -35,6 +35,7 @@ public:
     bool ReverseAA(std::vector<int>& cardlist);
     bool DetectReverse();
     bool IsPairs(std::vector<int>& cardlist);
+    bool IsWin();
 
 private:
 	std::vector<int> m_wang;
