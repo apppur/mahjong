@@ -27,16 +27,19 @@ public:
 	bool DetectWinOne();
 	int  CalcLeftCard(std::vector<int>& cardlist, std::vector<int>& leftlist);
 	bool RemoveAA(std::vector<int>& cardlist);
+    bool RemoveAAR(std::vector<int>& cardlist);
 	bool RemoveAAA(std::vector<int>& cardlist);
 	void RemoveABC(std::vector<int>& cardlist, int hong);
 	void RemoveABC(std::vector<int>& cardlist);
 	void RemoveCBA(std::vector<int>& cardlist, int hong);
 	void RemoveCBA(std::vector<int>& cardlist);
     bool ReverseAA(std::vector<int>& cardlist);
+    bool ReverseAAR(std::vector<int>& cardlist);
     bool DetectReverse();
     bool IsPairs(std::vector<int>& cardlist);
     bool IsWin();
 
+    bool IsAAA(std::vector<int>& cardlist);
 private:
 	std::vector<int> m_wang;
 	std::vector<int> m_tong;
