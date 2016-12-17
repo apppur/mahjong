@@ -900,7 +900,11 @@ void DetectWin::RemoveABC(std::vector<int>& cardlist, int hong)
 	}
 	std::vector<int> leftlist;
 	int left = CalcLeftCard(cardlist, leftlist);
-	if (hong == 2 && left == 1)
+    if (hong == 1 && left == 2 && leftlist.size() == 1)
+    {
+        cardlist[leftlist[0]] = 0;
+    }
+	else if (hong == 2 && left == 1)
 	{
 		cardlist[leftlist[0]] = 0;
 	}
@@ -965,7 +969,11 @@ void DetectWin::RemoveCBA(std::vector<int>& cardlist, int hong)
 	}
 	std::vector<int> leftlist;
 	int left = CalcLeftCard(cardlist, leftlist);
-	if (hong == 2 && left == 1)
+    if (hong == 1 && left == 2 && leftlist.size() == 1)
+    {
+        cardlist[leftlist[0]] = 0;
+    }
+	else if (hong == 2 && left == 1)
 	{
 		cardlist[leftlist[0]] = 0;
 	}
