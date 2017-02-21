@@ -12,6 +12,7 @@ DetectWinPX::DetectWinPX()
     m_bban = 0;
 	m_all = false;
 	m_win = false;
+    m_bpairwin = false;
 	m_hongWTT.assign(35, 0);
 }
 
@@ -30,6 +31,7 @@ void DetectWinPX::Reset()
     m_bban = 0;
 	m_all = false;
 	m_win = false;
+    m_bpairwin = false;
     m_ting.clear();
 	m_hongWTT.assign(35, 0);
 }
@@ -311,7 +313,14 @@ bool DetectWinPX::DetectWinOne()
 
 	//DetectAllCard(); 
     //DetectReverse();
+    bool bwin;
+    if (m_bpairwin)
+    {
+        bwin = IsPairWin();
+    }
+
 	DetectAllCardPX(); 
+    m_win = m_win || bwin;
     return m_win;
 }
 
@@ -1146,6 +1155,37 @@ bool DetectWinPX::RemoveAARPX(std::vector<int>& cardlist)
 	return flag;
 }
 
+bool DetectWinPX::IsPairWin()
+{
+    int amount = 0;
+	for (unsigned int i = 0; i < m_hongWTT.size() - 1; i++)
+	{
+		if (m_hongWTT[i] == 2)
+		{
+            amount++;
+		}
+	}
+
+    if (amount == 6)
+    {
+        
+        for (unsigned int i = 0; i < m_hongWTT.size() - 1; i++)
+        {
+            if (m_hongWTT[i] == 1)
+            {
+                CardInfo card = DeCodeCard(i);
+                AddTingCard(card);
+            }
+        }
+        m_win = true;
+        return true;
+    } 
+    else
+    {
+        return false;
+    }
+}
+
 bool DetectWinPX::DetectAllCardPX()
 {
 	for (int i = 1; i < 34; i++)
@@ -1186,7 +1226,7 @@ bool DetectWinPX::IsWinPX()
 {
     std::vector<int> cardlist;
     cardlist.assign(m_hongWTT.begin(), m_hongWTT.end());
-    if (RemoveAAPX(cardlist))
+    if (RemoveAAPX(cardlist) && (m_bpairwin && IsPairWin()))
     {
         m_win = true;
     }

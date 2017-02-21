@@ -47,6 +47,10 @@ public:
 	bool RemoveAAAPX(std::vector<int>& cardlist);
 	void RemoveABCPX(std::vector<int>& cardlist);
     bool IsWinPX();
+
+    bool IsPairWin();
+    bool GetPairWin() { return m_bpairwin; }
+    void SetPairWin(bool bpairwin) { m_bpairwin = bpairwin; }
 private:
 	std::vector<int> m_wang;
 	std::vector<int> m_tong;
@@ -60,5 +64,6 @@ private:
     int m_bban;
 	bool m_all;
 	bool m_win;
+    bool m_bpairwin;
 	std::vector<int> m_hongWTT;
 };
