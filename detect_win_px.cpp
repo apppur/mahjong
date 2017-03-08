@@ -1226,7 +1226,7 @@ bool DetectWinPX::IsWinPX()
 {
     std::vector<int> cardlist;
     cardlist.assign(m_hongWTT.begin(), m_hongWTT.end());
-    if (RemoveAAPX(cardlist) && (m_bpairwin && IsPairWin()))
+    if (RemoveAAPX(cardlist) || RemoveAARPX(cardlist) || (m_bpairwin && IsPairWin()))
     {
         m_win = true;
     }
